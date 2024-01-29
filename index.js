@@ -2,8 +2,19 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
+const mongoose = require('mongoose');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+	],
+});
+
+const dbURI = "mongodb+srv://zyad:9cmXYrxoe3OE69dZ@chat-bot.u3d8ate.mongodb.net/chatbot?retryWrites=true&w=majority"
+
+mongoose.connect(dbURI).then((result) => console.log("connected to db")).catch((err) => console.log(err));
 
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
