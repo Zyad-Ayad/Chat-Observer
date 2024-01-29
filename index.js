@@ -14,7 +14,7 @@ const client = new Client({
 
 const dbURI = "mongodb+srv://zyad:9cmXYrxoe3OE69dZ@chat-bot.u3d8ate.mongodb.net/chatbot?retryWrites=true&w=majority"
 
-mongoose.connect(dbURI).then((result) => console.log("connected to db")).catch((err) => console.log(err));
+mongoose.connect(dbURI).then((result) => console.log("connected to db"));
 
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');

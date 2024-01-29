@@ -40,10 +40,11 @@ const messageSchema = new Schema({
             type: String,
             required: true
         },
-        editTimestamp : {
+        editedTimestamp : {
             type: Number,
             required: true
         },
+        _id : false
     }]
 }
 );

@@ -3,16 +3,13 @@ const mongoose = require('mongoose');
 const Message = require('../models/message.js');
 
 module.exports = {
-	name: Events.MessageUpdate,
-	execute(oldMessage, newMessage) {
+	name: Events.MessageDelete,
+	execute(message) {
 		Message.updateOne({
-			id: oldMessage.id,
+			id: message.id,
 		}, {
-			$push: {
-				updates: {
-					content: newMessage.content,
-					editedTimestamp: newMessage.editedTimestamp,
-				},
+			$set: {
+                deleted: true,
 			},
 		}).catch((err) => {
 			console.log(err);
