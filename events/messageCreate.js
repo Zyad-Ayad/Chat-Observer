@@ -6,9 +6,12 @@ const Guild = require('../models/guild.js');
 module.exports = {
 	name: Events.MessageCreate,
 	async execute(message) {
+
+
+		// if message is sent by bot return
 		if (message.author.bot) return;
 
-		// if message is sent by webhook, return
+		// if message is sent by webhook return
 		if(message.webhookId) return;
 
 		let guild = await Guild.findOne({ id: message.guildId }).catch((err) => console.log(err));
@@ -45,5 +48,7 @@ module.exports = {
 			deleted: false,
 		});
 		msg.save().catch((err) => console.log(err));
+
+
 	},
 };  
