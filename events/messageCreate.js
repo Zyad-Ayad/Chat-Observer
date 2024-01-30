@@ -5,6 +5,7 @@ const Message = require('../models/message.js');
 module.exports = {
 	name: Events.MessageCreate,
 	execute(message) {
+		if (message.author.bot) return;
 		msg = new Message({
 			channelId: message.channelId,
 			guildId: message.guildId,

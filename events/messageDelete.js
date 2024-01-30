@@ -5,6 +5,7 @@ const Message = require('../models/message.js');
 module.exports = {
 	name: Events.MessageDelete,
 	execute(message) {
+		if (message.author.bot) return;
 		Message.updateOne({
 			id: message.id,
 		}, {

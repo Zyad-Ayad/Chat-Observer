@@ -5,6 +5,7 @@ const Message = require('../models/message.js');
 module.exports = {
 	name: Events.MessageUpdate,
 	execute(oldMessage, newMessage) {
+		if (message.author.bot) return;
 		Message.updateOne({
 			id: oldMessage.id,
 		}, {
