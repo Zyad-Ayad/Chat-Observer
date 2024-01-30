@@ -7,6 +7,9 @@ module.exports = {
 	async execute(oldMessage, newMessage) {
 		if (message.author.bot) return;
 
+		// if message is sent by webhook, return
+		if(message.webhookId) return;
+		
 		let guild = await Guild.findOne({ id: message.guildId }).catch((err) => console.log(err));
 
         if(!guild)
