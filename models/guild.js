@@ -2,20 +2,18 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const guildSchema = new Schema({
-    guildId: {
+    id: {
         type: String,
         required: true,
         unique: true
     },
     listType : {
         type: String,
-        required: true,
-        default: "blacklist"
+        default: "blackList"
     },
     list : [String],
     logChannelId : {
         type: String,
-        required: true,
         default: ""
     }
 }
