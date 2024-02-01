@@ -30,7 +30,7 @@ module.exports = {
                     By default, the bot will observe all channels it has read permissions in. i.e the list is empty and the list type is black list.`
                 },
             )
-            .setColor('BLUE')
+            .setColor('#0000ff')
             .setFooter('Chat Observer')
             .addTimestamp();
 
