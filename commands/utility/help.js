@@ -7,27 +7,49 @@ module.exports = {
     async execute(interaction) {
 
         const embed = new EmbedBuilder()
-            .setTitle('Help')
-            .setDescription('Chat observer is a unique bot that observe your discord server messages.')
+            .setTitle('**Help Command - Chat Observer Bot**')
+            .setDescription(`Greetings! I'm Chat Observer, a unique bot designed to keep a watchful eye on your Discord server messages. Here's a quick guide to get you started:`)
             .addFields(
                 {
-                    name: "Required permissions",
-                    value: `The bot itself just need to be able to read messages in the channels you want to observe, and send messages in the log channel.
-                    But for you to be able to manage the bot, you need to have the following permissions:
-                    \`Manage Messages\`, \`Manage Channels\`, \`Manage Server\``,
+                    name: "**Required Permissions:**",
+                    value: `- **Bot Permissions:**
+                    - Read Messages (Required to observe messages)
+                    - Send Messages (Required in the designated channel to send logs)
+                  
+                  - **User Permissions (For Managing Bot):**
+                    - Manage Messages
+                    - Manage Channels
+                    - Manage Server`,
                     inline: false
                 },
                 {
-                    name: "Log Channel",
-                    value: `The log channel is the channel the bot will send the logs to.
-                    To set the log channel, use \`/logchannel\` command.`
+                    name: "*Log Channel:**",
+                    value: `The log channel is where all the magic happens! This is where the bot sends its detailed logs.
+                    To set the log channel, simply use the `/logchannel` command.`
                 },
                 {
-                    name: "List",
-                    value: `The list is the list of channels the bot will observe.
-                    To add or remove channels from the list, use \`/list\` command.
-                    By default, the bot will observe all channels it has read permissions in. i.e the list is empty and the list type is black list.`
+                    name: "**List:**",
+                    value: `The list is the collection of channels I'll be observing. Here's how you can manage it:
+
+                    - **Add Channel to List:**
+                      - Use \`/list add [channel]\` to add a specific channel to the observation list.
+                    
+                    - **Remove Channel from List:**
+                      - Use \`/list remove [channel]\` to take a channel off the list.
+                    
+                    - **Change List Type:**
+                      - Use \`/list type [Black List/White List]\` to switch between list types.
+                    
+                    - **Show List and Type:**
+                      - Type \`/list show\` to see the current list type and the channels in it`
                 },
+                {
+                    name: "**Default Settings:",
+                    value: `By default, I keep an eye on all channels where I can read messages. The list starts empty, and the default list type is Black List.
+                    
+                    Now you're all set! If you ever need assistance or want to tweak settings, just give me a shout. Happy chatting!`
+                }
+
             )
             .setColor('#0000ff')
             .setFooter({
