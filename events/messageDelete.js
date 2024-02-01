@@ -130,6 +130,15 @@ module.exports = {
 				});
 			}
 
+			if(message.attachments.size > 0)
+			{
+				embed.addFields({
+					name: "Attachment Note",
+					value: `Attachments are not available after a short time.`,
+					inline: false
+				});
+			}
+
 
 
 		

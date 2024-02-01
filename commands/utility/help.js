@@ -26,7 +26,6 @@ module.exports = {
                     name: "List",
                     value: `The list is the list of channels the bot will observe.
                     To add or remove channels from the list, use \`/list\` command.
-                    To swap between black list and white list, use \`/listtype\` command.
                     By default, the bot will observe all channels it has read permissions in. i.e the list is empty and the list type is black list.`
                 },
             )
