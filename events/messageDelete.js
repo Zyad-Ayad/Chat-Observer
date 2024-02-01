@@ -39,6 +39,7 @@ module.exports = {
 			return;
 		}
 
+
 		
 
 		const embed = new EmbedBuilder()
@@ -46,16 +47,21 @@ module.exports = {
 				name: "Chat Observer",
 				url: "https://discord.com/api/oauth2/authorize?client_id=1199783232749707344&permissions=0&scope=bot",
 			})
-			.setTitle("Message deleted")
+			.setTitle("Message deleted :wastebasket:")
 			.addFields(
 				{
-					name: "author username",
+					name: "Author username",
 					value: message.author.username,
 					inline: true
 				},
 				{
-					name: "author displayName",
+					name: "Author displayName",
 					value: message.author.displayName,
+					inline: true
+				},
+				{
+					name : "Author ID",
+					value: message.author.id,
 					inline: true
 				},
 				{
@@ -78,14 +84,33 @@ module.exports = {
 					value: message.attachments.size.toString(),
 					inline: true
 				},
-				{
-					name: "Message content",
-					value: message.content.substring(0,1024),
-					inline: false
-				}
 
 			)
 			.setColor("#f50000")
+			.setFooter({
+                text: "Chat Observer",
+                iconURL: client.user.avatarURL(),
+            })
+            .setTimestamp();
+
+			if(!message.content)
+			{
+
+				embed.addFields({
+					name: "Message content - No content",
+					value: "This message has no content, it's probably an attachment.",
+					inline: false
+				});
+
+			}
+			else
+			{
+				embed.addFields({
+					name: "Message content",
+					value: message.content.substring(0,1024),
+					inline: false
+				});
+			}
 
 			for(let i = 1024; i < message.content.length; i+=1024)
 			{
@@ -93,6 +118,15 @@ module.exports = {
 					name: "Message content continued",
 					value: message.content.substring(i,i+1024),
 					inline: false
+				});
+			}
+
+
+			for (const attachment of message.attachments.values()) {
+				embed.addFields({
+					name: "Attachment",
+					value: `${attachment.url}`,
+					inline: true
 				});
 			}
 

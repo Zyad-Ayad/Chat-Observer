@@ -54,16 +54,21 @@ module.exports = {
 		}
 
 		const messageDetails = new EmbedBuilder()
-			.setTitle("Message edited - Details")
+			.setTitle("Message edited - Details :pencil:")
 			.addFields(
 				{
-					name: "author username",
+					name: "Author username",
 					value: newMessage.author.username,
 					inline: true
 				},
 				{
-					name: "author displayName",
+					name: "Author displayName",
 					value: newMessage.author.displayName,
+					inline: true
+				},
+				{
+					name : "Author ID",
+					value: newMessage.author.id,
 					inline: true
 				},
 				{
@@ -80,19 +85,71 @@ module.exports = {
 					name: "Go to message context",
 					value: `[Click here](https://discord.com/channels/${newMessage.guildId}/${newMessage.channelId}/${newMessage.id})`,
 					inline: true
-				}
+				},
+
 			)
 			.setColor("#ffa200")
+			.setFooter({
+                text: "Chat Observer",
+                iconURL: client.user.avatarURL(),
+            })
+            .setTimestamp();
 
 		const oldMessageEmbed = new EmbedBuilder()
 			.setTitle("Old message")
-			.setDescription(oldMessage.content)
 			.setColor("#ff0000")
+			.setFooter({
+                text: "Chat Observer",
+                iconURL: client.user.avatarURL(),
+            })
+            .setTimestamp();
+
+		if(oldMessage.content)
+		{
+			oldMessageEmbed.setDescription(oldMessage.content);
+		}
+		else
+		{
+			oldMessageEmbed.setDescription("No This message has no content, it's probably an attachment.");
+		}
+
+		for(const attachment of oldMessage.attachments.values())
+		{
+			oldMessageEmbed.addFields({
+				name: "Attachment",
+				value: attachment.url,
+				inline: true
+			});
+		}
+
+
 
 		const newMessageEmbed = new EmbedBuilder()
 			.setTitle("New message")
-			.setDescription(newMessage.content)
 			.setColor("#00ff00")
+			.setFooter({
+                text: "Chat Observer",
+                iconURL: client.user.avatarURL(),
+            })
+            .setTimestamp();
+
+		if(newMessage.content)
+		{
+			newMessageEmbed.setDescription(newMessage.content);
+		}
+		else
+		{
+			newMessageEmbed.setDescription("No This message has no content, it's probably an attachment.");
+		}
+
+		for(const attachment of newMessage.attachments.values())
+		{
+			newMessageEmbed.addFields({
+				name: "Attachment",
+				value: attachment.url,
+				inline: true
+			});
+		}
 			
 		channel.send({ embeds: [messageDetails, oldMessageEmbed, newMessageEmbed] });
 
