@@ -8,8 +8,8 @@ const guildSchema = new Schema({
         unique: true
     },
     listType : {
-        type: String,
-        default: "blackList"
+        type: Boolean,
+        default: false
     },
     list : [String],
     logChannelId : {

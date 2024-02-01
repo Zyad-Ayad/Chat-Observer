@@ -15,10 +15,6 @@ module.exports = {
             });
             guild.save().catch((err) => console.log(err));
         }
-
-        // send message to guild owner
-        const owner = await createdGuild.fetchOwner();
-        owner.send("Thanks for adding me to your server! To get started, type `!help` in a channel I can see!").catch((err) => console.log(err));
         
 
 	},
