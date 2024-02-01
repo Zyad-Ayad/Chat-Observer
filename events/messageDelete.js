@@ -20,11 +20,11 @@ module.exports = {
 
 		const inList = guild.list.includes(message.channelId);
 
-		if (inList && guild.listType == "blackList") {
+		if (inList && guild.listType == false) {
 			return;
 		}
 		
-		if (!inList && guild.listType == "whiteList") {
+		if (!inList && guild.listType == true) {
 			return;
 		}
 

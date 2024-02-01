@@ -31,7 +31,7 @@ module.exports = {
 			return await interaction.reply({ content: `I don't have permission to send or read messages in ${channel.name}`, ephemeral: true });
 		}
 		
-		const guild = await Guild.findOne({ id: interaction.guild.id }).catch((err) => console.log(err));
+		let guild = await Guild.findOne({ id: interaction.guild.id }).catch((err) => console.log(err));
 		if (!guild) {
 			guild = new Guild({
 				id: interaction.guild.id,
@@ -51,8 +51,7 @@ module.exports = {
 		by default, I will log message edits and deletions of all channels I have read permissions in.
 		to change this, use \`/list\` and \`/listtype\` commands.
 
-		use \`/list\` to add or remove channels from the list.
-		use \`/listtype\` to change the list type to black list or white list.
+		use \`/list\` to add or remove channels from the list or to swap between black list and white list.
 
 		**Note:** current list type is ${guild.listType == 0? `black` : `white`} list and has ${guild.list.length} channels in it.
 		` });
