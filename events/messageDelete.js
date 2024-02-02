@@ -117,21 +117,16 @@ module.exports = {
 				});
 			}
 
+			
 
-			for (const attachment of message.attachments.values()) {
-				embed.addFields({
-					name: "Attachment",
-					value: `${attachment.url}`,
-					inline: true
-				});
-			}
 
 			if(message.attachments.size > 0)
 			{
 				embed.addFields({
-					name: "Attachments Note",
-					value: `Attachments may not be available after deletion.`,
-					inline: false
+					name: "Attachments",
+					value:`${message.attachments.map(attachment => attachment.url).join("\n")}
+					Attachments may not be available after deletion.`,
+					inline: true
 				});
 			}
 
