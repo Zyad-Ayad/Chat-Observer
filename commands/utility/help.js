@@ -12,39 +12,40 @@ module.exports = {
             .addFields(
                 {
                     name: "**Required Permissions:**",
-                    value: `- **Bot Permissions:**
-                    - Read Messages (Required to observe messages)
-                    - Send Messages (Required in the designated channel to send logs)
-                  
-                  - **User Permissions (For Managing Bot):**
-                    - Manage Messages
-                    - Manage Channels
-                    - Manage Server`,
+                    value: `
+                    **Bot Permissions:**
+                     Read Messages (Required to observe messages)
+                     Send Messages (Required in the designated channel to send logs)
+                
+                    **User Permissions (For Managing Bot):**
+                     Manage Messages
+                     Manage Channels
+                     Manage Server`,
                     inline: false
                 },
                 {
-                    name: "*Log Channel:**",
+                    name: "**Log Channel:**",
                     value: `The log channel is where all the magic happens! This is where the bot sends its detailed logs.
-                    To set the log channel, simply use the `/logchannel` command.`
+                    To set the log channel, simply use the \`/logchannel\` command.`
                 },
                 {
                     name: "**List:**",
                     value: `The list is the collection of channels I'll be observing. Here's how you can manage it:
 
-                    - **Add Channel to List:**
-                      - Use \`/list add [channel]\` to add a specific channel to the observation list.
+                    **Add Channel to List:**
+                       Use \`/list add [channel]\` to add a specific channel to the observation list.
                     
-                    - **Remove Channel from List:**
-                      - Use \`/list remove [channel]\` to take a channel off the list.
+                    **Remove Channel from List:**
+                       Use \`/list remove [channel]\` to take a channel off the list.
                     
-                    - **Change List Type:**
-                      - Use \`/list type [Black List/White List]\` to switch between list types.
+                    **Change List Type:**
+                       Use \`/list type [Black List/White List]\` to switch between list types.
                     
-                    - **Show List and Type:**
-                      - Type \`/list show\` to see the current list type and the channels in it`
+                    **Show List and Type:**
+                       Type \`/list show\` to see the current list type and the channels in it`
                 },
                 {
-                    name: "**Default Settings:",
+                    name: "**Default Settings:**",
                     value: `By default, I keep an eye on all channels where I can read messages. The list starts empty, and the default list type is Black List.
                     
                     Now you're all set! If you ever need assistance or want to tweak settings, just give me a shout. Happy chatting!`

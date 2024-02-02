@@ -113,15 +113,6 @@ module.exports = {
 			oldMessageEmbed.setDescription("No This message has no content, it's probably an attachment.");
 		}
 
-		for(const attachment of oldMessage.attachments.values())
-		{
-			oldMessageEmbed.addFields({
-				name: "Attachment",
-				value: attachment.url,
-				inline: true
-			});
-		}
-
 
 
 		const newMessageEmbed = new EmbedBuilder()
@@ -142,14 +133,33 @@ module.exports = {
 			newMessageEmbed.setDescription("No This message has no content, it's probably an attachment.");
 		}
 
-		for(const attachment of newMessage.attachments.values())
+
+		// Get attachments that are added to new message that wasn't in old message
+		const newAttachments = newMessage.attachments.filter(attachment => !oldMessage.attachments.has(attachment.id));
+		
+		// Get attachments that are removed from new message that was in old message
+		const removedAttachments = oldMessage.attachments.filter(attachment => !newMessage.attachments.has(attachment.id));
+
+		if(newAttachments.size > 0)
 		{
 			newMessageEmbed.addFields({
-				name: "Attachment",
-				value: attachment.url,
+				name: "Added Attachments",
+				value: newAttachments.map(attachment => attachment.url).join("\n"),
 				inline: true
 			});
 		}
+
+		if(removedAttachments.size > 0)
+		{
+			oldMessageEmbed.addFields({
+				name: "Removed Attachments",
+				value: removedAttachments.map(attachment => attachment.url).join("\n"),
+				inline: true
+			});
+		}
+		
+
+
 			
 		channel.send({ embeds: [messageDetails, oldMessageEmbed, newMessageEmbed] });
 
