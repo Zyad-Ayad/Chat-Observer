@@ -43,10 +43,6 @@ module.exports = {
 		
 
 		const embed = new EmbedBuilder()
-			.setAuthor({
-				name: "Chat Observer",
-				url: "https://discord.com/api/oauth2/authorize?client_id=1199783232749707344&permissions=0&scope=bot",
-			})
 			.setTitle("Message deleted :wastebasket:")
 			.addFields(
 				{
@@ -88,7 +84,7 @@ module.exports = {
 			)
 			.setColor("#f50000")
 			.setFooter({
-                text: "Chat Observer",
+                text: client.user.username,
                 iconURL: client.user.avatarURL(),
             })
             .setTimestamp();
@@ -133,8 +129,8 @@ module.exports = {
 			if(message.attachments.size > 0)
 			{
 				embed.addFields({
-					name: "Attachment Note",
-					value: `Attachments are not available after a short time.`,
+					name: "Attachments Note",
+					value: `Attachments may not be available after deletion.`,
 					inline: false
 				});
 			}

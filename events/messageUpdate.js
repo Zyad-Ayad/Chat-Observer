@@ -9,7 +9,7 @@ module.exports = {
 
 		if (oldMessage.partial) {
 			try {
-				await message.fetch();
+				await oldMessage.fetch();
 			}
 			catch (err) {
 				return;
@@ -18,7 +18,7 @@ module.exports = {
 
 		if (newMessage.partial) {
 			try {
-				await message.fetch();
+				await newMessage.fetch();
 			}
 			catch (err) {
 				return;
@@ -90,7 +90,7 @@ module.exports = {
 			)
 			.setColor("#ffa200")
 			.setFooter({
-                text: "Chat Observer",
+                text: client.user.username,
                 iconURL: client.user.avatarURL(),
             })
             .setTimestamp();
@@ -99,7 +99,7 @@ module.exports = {
 			.setTitle("Old message")
 			.setColor("#ff0000")
 			.setFooter({
-                text: "Chat Observer",
+                text: client.user.username,
                 iconURL: client.user.avatarURL(),
             })
             .setTimestamp();
@@ -128,7 +128,7 @@ module.exports = {
 			.setTitle("New message")
 			.setColor("#00ff00")
 			.setFooter({
-                text: "Chat Observer",
+                text: client.user.username,
                 iconURL: client.user.avatarURL(),
             })
             .setTimestamp();

@@ -7,8 +7,8 @@ module.exports = {
     async execute(interaction) {
 
         const embed = new EmbedBuilder()
-            .setTitle('**Help Command - Chat Observer Bot**')
-            .setDescription(`Greetings! I'm Chat Observer, a unique bot designed to keep a watchful eye on your Discord server messages. Here's a quick guide to get you started:`)
+            .setTitle('**Help Command - Formova**')
+            .setDescription(`Greetings! I'm Formova, a unique bot designed to keep a watchful eye on your Discord server messages. Here's a quick guide to get you started:`)
             .addFields(
                 {
                     name: "**Required Permissions:**",
@@ -53,7 +53,7 @@ module.exports = {
             )
             .setColor('#0000ff')
             .setFooter({
-                text: "Chat Observer",
+                text: client.user.username,
                 iconURL: client.user.avatarURL(),
             })
             .setTimestamp();
