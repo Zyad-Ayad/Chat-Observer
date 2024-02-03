@@ -9,7 +9,25 @@ module.exports = {
 
 
 		if (message.partial) {
-			return;
+			// check if the message in db
+
+			const msg = await Message.findOne ({ id: message.id }).catch((err) => console.log(err));
+			if (!msg) {
+				return;
+			}
+
+			const author = await message.guild.members.fetch(msg.authorId).catch((err) => console.log(err));
+			if (!author) {
+				return;
+			}
+			message.author = author;
+			message.guildId = msg.guildId;
+			message.channelId = msg.channelId;
+			message.content = msg.content;
+			message.createdAt = msg.createdAt;
+			message.attachments = msg.attachments;
+			
+
 		}
 
 		const guild = await Guild.findOne({ id: message.guildId }).catch((err) => console.log(err));
@@ -40,24 +58,23 @@ module.exports = {
 		}
 
 
-		
 
 		const embed = new EmbedBuilder()
 			.setTitle("Message deleted :wastebasket:")
 			.addFields(
 				{
 					name: "Author username",
-					value: message.author.username,
+					value: message.author.user.username,
 					inline: true
 				},
 				{
 					name: "Author displayName",
-					value: message.author.displayName,
+					value: message.author.user.displayName,
 					inline: true
 				},
 				{
 					name : "Author ID",
-					value: message.author.id,
+					value: message.author.user.id,
 					inline: true
 				},
 				{
@@ -75,14 +92,9 @@ module.exports = {
 					value: `[Click here](https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id})`,
 					inline: true
 				},
-				{
-					name:"Message attachments",
-					value: message.attachments.size.toString(),
-					inline: true
-				},
 
 			)
-			.setColor("#f50000")
+			.setColor("#ff0000")
 			.setFooter({
                 text: client.user.username,
                 iconURL: client.user.avatarURL(),
@@ -120,7 +132,7 @@ module.exports = {
 			
 
 
-			if(message.attachments.size > 0)
+			if(message.attachments.size > 0 || message.attachments.length > 0) // handle if message has attachments or not
 			{
 				embed.addFields({
 					name: "Attachments",
