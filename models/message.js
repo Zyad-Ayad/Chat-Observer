@@ -17,9 +17,9 @@ const messageSchema = new Schema({
         required: true,
         unique: true
     },
-    createdTimestamp: {
-        type: Number,
-        required: true
+    createdAt: {
+        type: Date,
+        required: true,
     },
     content: {
         type: String,
@@ -40,12 +40,31 @@ const messageSchema = new Schema({
             type: String,
             required: true
         },
-        editedTimestamp : {
-            type: Number,
+        editedAt : {
+            type: Date,
+            required: true
+        },
+        attachments : [{
+            url : {
+                type: String,
+                required: true
+            },
+            _id : false
+        }],
+        _id : false
+    }],
+    attachments : [{
+        url : {
+            type: String,
             required: true
         },
         _id : false
-    }]
+    }],
+    expireAt: {
+        type: Date,
+        default: () => Date.now() + 24 * 60 * 60 * 1000, // Set default expiration to 1 day (24 hours)
+        index: { expires: 0 },
+    }
 }
 );
 

@@ -15,7 +15,11 @@ const guildSchema = new Schema({
     logChannelId : {
         type: String,
         default: ""
-    }
+    },
+    level : {
+        type: Number,
+        default: 0
+    },
 }
 );
 
