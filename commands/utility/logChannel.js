@@ -58,4 +58,15 @@ module.exports = {
 
 
 	},
+	help : {
+		name: 'logchannel',
+		description: 'set channel for logging messages updates and deletions.',
+		options: [
+			{
+				name: 'channel',
+				description: 'The channel to log to',
+				usage : `/logchannel #channel-name`,
+			}
+		]
+	}
 };

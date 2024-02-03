@@ -95,7 +95,7 @@ module.exports = {
                 .setDescription(`List type is ${guild.listType == 0 ? `black` : `white`} list and has ${guild.list.length} channels in it.`)
                 .setColor('#0000ff')
                 .setFooter({
-                    text: "Chat Observer",
+                    text: client.user.username,
                     iconURL: client.user.avatarURL(),
                 })
                 .setTimestamp()
@@ -105,4 +105,31 @@ module.exports = {
 
 
     },
+    help : {
+        name: "List",
+        description: "manage channels list. Channels list is used to filter channels for message logging.",
+        options: [
+            {
+                name: "type",
+                description: "change list type",
+                usage: "/list type <black/white>",
+            },
+            {
+                name: "add",
+                description: "add channel to list",
+                usage: "/list add <channel>",
+            },
+            {
+                name: "remove",
+                description: "remove channel from list",
+                usage: "/list remove <channel>",
+            },
+            {
+                name: "show",
+                description: "show list",
+                usage: "/list show",
+            }
+        ]
+    }
+
 };

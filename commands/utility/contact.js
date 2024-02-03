@@ -27,5 +27,9 @@ module.exports = {
         // Send the modal
         await interaction.showModal(modal);
 
+    },
+    help : {
+        name: 'contact',
+        description: 'Send a message to the bot developers.'
     }
 };

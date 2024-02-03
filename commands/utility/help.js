@@ -1,65 +1,87 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
+const fs = require('node:fs');
+const path = require('node:path');
+
+
+const commands = [];
+const commandFiles = fs.readdirSync(__dirname).filter(file => file.endsWith('.js'));
+for (const file of commandFiles) {
+    commands.push({
+        "name":file.split('.')[0],
+        "value":file.split('.')[0]
+})
+}
+
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
-        .setDescription('List all of my commands or info about a specific command.'),
+        .setDescription('List all of my commands or info about a specific command.')
+        .addStringOption(option =>
+            option.setName('command')
+                .setDescription('The command to get help for')
+                .setRequired(false)
+                .addChoices(...commands)
+        ),
     async execute(interaction) {
 
         const embed = new EmbedBuilder()
             .setTitle('**Help Command - Formova**')
             .setDescription(`Greetings! I'm Formova, a unique bot designed to keep a watchful eye on your Discord server messages. Here's a quick guide to get you started:`)
-            .addFields(
-                {
-                    name: "**Required Permissions:**",
-                    value: `
-                    **Bot Permissions:**
-                     Read Messages (Required to observe messages)
-                     Send Messages (Required in the designated channel to send logs)
+
+        const commandName = interaction.options.getString('command');
+
+
+        if (!commandName) {
+            for (const command of client.commands) {
+                embed.addFields({
+                    name: `/${command[1].data.name}`,
+                    value: command[1].data.description
                 
-                    **User Permissions (For Managing Bot):**
-                     Manage Messages
-                     Manage Channels
-                     Manage Server`,
-                    inline: false
-                },
-                {
-                    name: "**Log Channel:**",
-                    value: `The log channel is where all the magic happens! This is where the bot sends its detailed logs.
-                    To set the log channel, simply use the \`/logchannel\` command.`
-                },
-                {
-                    name: "**List:**",
-                    value: `The list is the collection of channels I'll be observing. Here's how you can manage it:
+                });
+            }
+        }
+        else {
+            const command = client.commands.get(commandName);
+            if (!command) {
+                return await interaction.reply({ content: 'That\'s not a valid command!', ephemeral: true });
+            }
+            embed.setTitle(`**/${command.data.name} Command**`);
+            embed.setDescription(command.data.description);
 
-                    **Add Channel to List:**
-                       Use \`/list add [channel]\` to add a specific channel to the observation list.
-                    
-                    **Remove Channel from List:**
-                       Use \`/list remove [channel]\` to take a channel off the list.
-                    
-                    **Change List Type:**
-                       Use \`/list type [Black List/White List]\` to switch between list types.
-                    
-                    **Show List and Type:**
-                       Type \`/list show\` to see the current list type and the channels in it`
-                },
-                {
-                    name: "**Default Settings:**",
-                    value: `By default, I keep an eye on all channels where I can read messages. The list starts empty, and the default list type is Black List.
-                    
-                    Now you're all set! If you ever need assistance or want to tweak settings, just give me a shout. Happy chatting!`
+            if (command.help.options) {
+                for (const option of command.help.options) {
+                    embed.addFields({
+                        name: `/${command.data.name} ${option.name}`,
+                        value: `${option.description}\nUsage: ${option.usage}`,
+                    });
                 }
+            }
+        }
 
-            )
-            .setColor('#0000ff')
-            .setFooter({
-                text: client.user.username,
-                iconURL: client.user.avatarURL(),
-            })
-            .setTimestamp();
+        embed.setColor('#0000FF')
+        .setFooter({
+            text: client.user.username,
+            iconURL: client.user.avatarURL(),
+        })
+        .setTimestamp();
+
 
         await interaction.reply({ embeds: [embed], ephemeral: true });
 
+
     },
+    help: {
+        name: 'help',
+        description: 'List all of my commands or info about a specific command.',
+        options : [
+            {
+                name: 'command',
+                description: 'The command to get help for',
+                usage: '/help [command]',
+            }
+        ]
+    }
+
 };
