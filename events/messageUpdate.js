@@ -72,6 +72,11 @@ module.exports = {
 					inline: true
 				},
 				{
+					name: "Message ID",
+					value: message.id,
+					inline: true
+				},
+				{
 					name: "Update Date - Time",
 					value: newMessage.editedAt.toUTCString(),
 					inline: true

@@ -78,6 +78,11 @@ module.exports = {
 					inline: true
 				},
 				{
+					name: "Message ID",
+					value: message.id,
+					inline: true
+				},
+				{
 					name: "Delete Date - Time",
 					value: message.createdAt.toUTCString(),
 					inline: true
