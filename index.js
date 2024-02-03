@@ -1,8 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
-const { token } = require('./config.json');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 global.client = new Client({
 	intents: [
@@ -15,7 +15,9 @@ global.client = new Client({
 	],
 });
 
-const dbURI = "mongodb+srv://zyad:9cmXYrxoe3OE69dZ@chat-bot.u3d8ate.mongodb.net/chatbot?retryWrites=true&w=majority"
+const dbURI = process.env.MONGO_URI;
+const token = process.env.ENV == "DEV" ? process.env.token_DEV : process.env.token_PROD;
+
 
 mongoose.connect(dbURI).then((result) => console.log("connected to db"));
 
