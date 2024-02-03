@@ -20,7 +20,7 @@ module.exports = {
 			if (!author) {
 				return;
 			}
-			message.author = author;
+			message.author = author.user;
 			message.guildId = msg.guildId;
 			message.channelId = msg.channelId;
 			message.content = msg.content;
@@ -64,17 +64,17 @@ module.exports = {
 			.addFields(
 				{
 					name: "Author username",
-					value: message.author.user.username,
+					value: message.author.username,
 					inline: true
 				},
 				{
 					name: "Author displayName",
-					value: message.author.user.displayName,
+					value: message.author.displayName,
 					inline: true
 				},
 				{
 					name : "Author ID",
-					value: message.author.user.id,
+					value: message.author.id,
 					inline: true
 				},
 				{
