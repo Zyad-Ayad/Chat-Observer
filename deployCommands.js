@@ -48,3 +48,17 @@ const rest = new REST().setToken(token);
 		console.error(error);
 	}
 })();
+// env is PROD 
+if(process.env.ENV == "PROD")
+{
+	// Deploy the commands to the top.gg API
+	fetch(`https://discordbotlist.com/api/v1/bots/1199783232749707344/commands`, {
+	method: 'POST',
+	headers: {
+		'Authorization': process.env.DBL_TOKEN,
+		'Content-Type': 'application/json'
+	},
+	body: JSON.stringify(commands)
+}).then(res => res.json()).catch(console.error);
+
+}

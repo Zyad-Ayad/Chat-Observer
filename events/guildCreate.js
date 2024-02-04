@@ -28,6 +28,19 @@ module.exports = {
                 server_count: client.guilds.cache.size
             })
         }).then(res => res.json()).catch(console.error);
+
+        fetch(`https://discordbotlist.com/api/v1/bots/1199783232749707344/stats`, {
+            method: 'POST',
+            headers: {
+                'Authorization': process.env.DBL_TOKEN,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                guilds: client.guilds.cache.size,
+                users: client.users.cache.size
+            })
+        }).then(res => res.json()).catch(console.error);
+
         
 
 	},
