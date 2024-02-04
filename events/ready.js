@@ -17,7 +17,7 @@ module.exports = {
 		setInterval(() => {
 			const index = Math.floor(Math.random() * (botStatusList.length - 1) + 1);
 			client.user.setActivity(botStatusList[index]);
-		}, 10000);
+		}, 60*1000);
 
 
 	},

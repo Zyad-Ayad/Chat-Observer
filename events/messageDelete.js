@@ -7,20 +7,20 @@ module.exports = {
 	name: Events.MessageDelete,
 	async execute(message) {
 
+		const msg = await Message.findOne ({ id: message.id }).catch((err) => console.log(err));
 
 		if (message.partial) {
 			// check if the message in db
 
-			const msg = await Message.findOne ({ id: message.id }).catch((err) => console.log(err));
 			if (!msg) {
 				return;
 			}
 
-			const author = await message.guild.members.fetch(msg.authorId).catch((err) => console.log(err));
+			const author = await client.users.fetch(msg.authorId).catch((err) => console.log(err));
 			if (!author) {
 				return;
 			}
-			message.author = author.user;
+			message.author = author;
 			message.guildId = msg.guildId;
 			message.channelId = msg.channelId;
 			message.content = msg.content;
@@ -29,6 +29,10 @@ module.exports = {
 			
 
 		}
+
+		if(msg)
+		await Message.findOneAndUpdate({ id: message.id }, { deleted: true }).catch((err) => console.log(err));
+
 
 		const guild = await Guild.findOne({ id: message.guildId }).catch((err) => console.log(err));
 
