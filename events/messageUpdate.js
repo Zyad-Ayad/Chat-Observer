@@ -15,6 +15,8 @@ module.exports = {
 			return;
 		}
 
+		
+
 		// if new message is partial try to fetch it
 
 		if(newMessage.partial)
@@ -39,6 +41,12 @@ module.exports = {
 		if (!inList && guild.listType == true) {
 			return;
 		}
+
+
+		// add new message content to old message history
+
+
+		
 
 		// if logChannelId is not set return
 		if(!guild.logChannelId)
@@ -80,7 +88,7 @@ module.exports = {
 				},
 				{
 					name: "Update Date - Time",
-					value: newMessage.editedAt.toUTCString(),
+					value: new Date().toUTCString(),
 					inline: true
 				},
 				{
@@ -164,6 +172,36 @@ module.exports = {
 				inline: true
 			});
 		}
+
+		// add old message to message updates array
+		oldMessage.updates.push({
+			content: oldMessage.content,
+			attachments: oldMessage.attachments,
+			createdAt: oldMessage.createdAt
+		});
+
+		// if updates array is longer than 9 remove the first element
+		if(oldMessage.updates.length > 8)
+		{
+			oldMessage.updates.shift();
+		}
+
+
+		oldMessage.content = newMessage.content;
+		oldMessage.attachments = newMessage.attachments.map(attachment => {
+			return { url: attachment.url };
+		});
+		oldMessage.createdAt = new Date();
+
+		const expireAt = new Date();
+
+		if(!guild.level)
+			expireAt.setDate(expireAt.getDate() + 1);
+		else
+			expireAt.setDate(expireAt.getDate() + guild.level*5);
+		oldMessage.expireAt = expireAt;
+		oldMessage.save().catch((err) => console.log(err));
+
 		
 
 

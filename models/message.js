@@ -39,7 +39,7 @@ const messageSchema = new Schema({
             type: String,
             required: true
         },
-        editedAt : {
+        createdAt : {
             type: Date,
             required: true
         },

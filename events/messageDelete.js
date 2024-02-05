@@ -13,10 +13,8 @@ module.exports = {
 		{
 			return;
 		}
-
-		await Message.updateOne({ id : message.id }, { $set: { deleted: true } }).catch((err) => console.log(err));
-
 		const guild = await getGuild(message.guildId);		
+
 
 		// if list is false and channel in list return
 		const inList = guild.list.includes(message.channelId);
@@ -29,6 +27,19 @@ module.exports = {
 		if (!inList && guild.listType == true) {
 			return;
 		}
+
+		message.deleted = true;
+
+		const expireAt = new Date();
+
+
+		if(!guild.level)
+			expireAt.setDate(expireAt.getDate() + 1);
+		else
+			expireAt.setDate(expireAt.getDate() + guild.level*5);
+		message.expireAt = expireAt;
+		message.save().catch((err) => console.log(err));
+
 
 		// if logChannelId is not set return
 		if(!guild.logChannelId)
