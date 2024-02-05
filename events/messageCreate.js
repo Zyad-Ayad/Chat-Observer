@@ -1,22 +1,7 @@
 const { Events } = require('discord.js');
-const mongoose = require('mongoose');
 const Message = require('../models/message.js');
 const Guild = require('../models/guild.js');
-
-const getGuild = async (guildId) => { 
-	let guild = await Guild.findOne({ id: guildId }).catch((err) => console.log(err));
-	
-	if(guild)
-		return guild;
-
-	guild = new Guild({
-		id: guildId,
-	});
-
-	await guild.save().catch((err) => console.log(err));
-	return guild;
-
-}
+const { getGuild } = require('../mongooseFunctions.js');
 
 module.exports = {
 	name: Events.MessageCreate,

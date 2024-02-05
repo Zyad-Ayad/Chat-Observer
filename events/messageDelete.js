@@ -1,84 +1,83 @@
 const { Events, EmbedBuilder } = require('discord.js');
-const mongoose = require('mongoose');
 const Message = require('../models/message.js');
 const Guild = require('../models/guild.js');
+const { getGuild } = require('../mongooseFunctions.js');
 
 module.exports = {
 	name: Events.MessageDelete,
 	async execute(message) {
 
-		const msg = await Message.findOne ({ id: message.id }).catch((err) => console.log(err));
-
-		if (message.partial) {
-			// check if the message in db
-
-			if (!msg) {
-				return;
-			}
-
-			const author = await client.users.fetch(msg.authorId).catch((err) => console.log(err));
-			if (!author) {
-				return;
-			}
-			message.author = author;
-			message.guildId = msg.guildId;
-			message.channelId = msg.channelId;
-			message.content = msg.content;
-			message.createdAt = msg.createdAt;
-			message.attachments = msg.attachments;
-			
-
-		}
-
-		if(msg)
-		await Message.findOneAndUpdate({ id: message.id }, { deleted: true }).catch((err) => console.log(err));
-
-
-		const guild = await Guild.findOne({ id: message.guildId }).catch((err) => console.log(err));
-
-		if (!guild) {
+		message = await Message.findOne({ id: message.id }).catch((err) => console.log(err));
+		
+		if(!message)
+		{
 			return;
 		}
 
+		await Message.updateOne({ id : message.id }, { $set: { deleted: true } }).catch((err) => console.log(err));
+
+		const guild = await getGuild(message.guildId);		
+
+		// if list is false and channel in list return
 		const inList = guild.list.includes(message.channelId);
 
 		if (inList && guild.listType == false) {
 			return;
 		}
 		
+		// if list is true and channel not in list return
 		if (!inList && guild.listType == true) {
 			return;
 		}
 
+		// if logChannelId is not set return
 		if(!guild.logChannelId)
 		{
 			return;
 		}	
 
-		const channel = message.guild.channels.cache.get(guild.logChannelId);
+		// get guild from cach if not found fetch it  if not found return
+		let dguild = await client.guilds.cache.get(message.guildId);
 
-		if (!channel) {
+		// maybe guild is deleted or not found
+		if(!dguild)
+		{
+			return;
+		}
+	
+		// get channel
+		const dchannel = dguild.channels.cache.get(guild.logChannelId);
+
+		// if channel is not found return
+		if (!dchannel) {
 			return;
 		}
 
+		// get author of the message
+		const dauthor = await dguild.members.fetch(message.authorId);
 
+		// if author is not found return
+		if(!dauthor)
+		{
+			return;
+		}
 
 		const embed = new EmbedBuilder()
 			.setTitle("Message deleted :wastebasket:")
 			.addFields(
 				{
 					name: "Author username",
-					value: message.author.username,
+					value: dauthor.user.username,
 					inline: true
 				},
 				{
 					name: "Author displayName",
-					value: message.author.displayName,
+					value: dauthor.user.displayName,
 					inline: true
 				},
 				{
 					name : "Author ID",
-					value: message.author.id,
+					value: dauthor.user.id,
 					inline: true
 				},
 				{
@@ -88,7 +87,7 @@ module.exports = {
 				},
 				{
 					name: "Delete Date - Time",
-					value: message.createdAt.toUTCString(),
+					value: new Date().toUTCString(),
 					inline: true
 				},
 				{
@@ -154,7 +153,7 @@ module.exports = {
 
 
 		
-		channel.send({ embeds: [embed] });
+		dchannel.send({ embeds: [embed] });
 
 
 	},
