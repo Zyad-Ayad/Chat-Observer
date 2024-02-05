@@ -9,9 +9,9 @@ module.exports = {
 		const botStatusList = [
 			"/help | Watching your messages",
 			"/help | Did you delete something?",
-			"/help | I've seen that edit",
-			"/help | I'm watching you",
-			"/help | you are on the list",
+			"/help | Try /history <messageID>",
+			"/help | Try /history <messageID>",
+			"/help | Watch your messages",
 		];
 
 		setInterval(() => {
