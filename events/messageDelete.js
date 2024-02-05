@@ -46,18 +46,18 @@ module.exports = {
 		}
 	
 		// get channel
-		const dchannel = dguild.channels.cache.get(guild.logChannelId);
+		const channel = dguild.channels.cache.get(guild.logChannelId);
 
 		// if channel is not found return
-		if (!dchannel) {
+		if (!channel) {
 			return;
 		}
 
 		// get author of the message
-		const dauthor = await dguild.members.fetch(message.authorId);
+		const author = await dguild.members.fetch(message.authorId);
 
 		// if author is not found return
-		if(!dauthor)
+		if(!author)
 		{
 			return;
 		}
@@ -67,17 +67,17 @@ module.exports = {
 			.addFields(
 				{
 					name: "Author username",
-					value: dauthor.user.username,
+					value: author.user.username,
 					inline: true
 				},
 				{
 					name: "Author displayName",
-					value: dauthor.user.displayName,
+					value: author.user.displayName,
 					inline: true
 				},
 				{
 					name : "Author ID",
-					value: dauthor.user.id,
+					value: author.user.id,
 					inline: true
 				},
 				{
@@ -153,7 +153,7 @@ module.exports = {
 
 
 		
-		dchannel.send({ embeds: [embed] });
+		channel.send({ embeds: [embed] });
 
 
 	},

@@ -1,57 +1,59 @@
 const { Events, EmbedBuilder } = require('discord.js');
-const mongoose = require('mongoose');
 const Message = require('../models/message.js');
 const Guild = require('../models/guild.js');
+const { getGuild } = require('../mongooseFunctions.js');
 
 module.exports = {
 	name: Events.MessageUpdate,
 	async execute(oldMessage, newMessage) {
 
-		if (oldMessage.partial) {
-			try {
-				await oldMessage.fetch();
-			}
-			catch (err) {
-				return;
-			}
-		}
+		// if old message is not in db return
 
-		if (newMessage.partial) {
-			try {
-				await newMessage.fetch();
-			}
-			catch (err) {
-				return;
-			}
-		}
+		oldMessage = await Message.findOne({ id: newMessage.id }).catch((err) => console.log(err));
 
-
-		const guild = await Guild.findOne({ id: newMessage.guildId }).catch((err) => console.log(err));
-
-		if (!guild) {
+		if (!oldMessage) {
 			return;
 		}
 
+		// if new message is partial try to fetch it
+
+		if(newMessage.partial)
+		{
+			try {
+				await newMessage.fetch();
+			} catch (error) {
+				return;
+			}
+		}
+
+		const guild = await getGuild(newMessage.guildId);		
+
+		// if list is false and channel in list return
 		const inList = guild.list.includes(newMessage.channelId);
 
 		if (inList && guild.listType == false) {
 			return;
 		}
 		
+		// if list is true and channel not in list return
 		if (!inList && guild.listType == true) {
 			return;
 		}
 
+		// if logChannelId is not set return
 		if(!guild.logChannelId)
 		{
 			return;
 		}	
 
+		// get channel 
 		const channel = newMessage.guild.channels.cache.get(guild.logChannelId);
 
+		// if channel is not found return
 		if (!channel) {
 			return;
 		}
+
 
 		const messageDetails = new EmbedBuilder()
 			.setTitle("Message edited - Details :pencil:")
@@ -73,7 +75,7 @@ module.exports = {
 				},
 				{
 					name: "Message ID",
-					value: message.id,
+					value: newMessage.id,
 					inline: true
 				},
 				{
