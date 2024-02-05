@@ -167,9 +167,8 @@ module.exports = {
 		
 
 
-			
-		channel.send({ embeds: [messageDetails, oldMessageEmbed, newMessageEmbed] });
 
+		channel.send({ embeds: [messageDetails, oldMessageEmbed, newMessageEmbed] }).catch((err) => {});
 
 
 
