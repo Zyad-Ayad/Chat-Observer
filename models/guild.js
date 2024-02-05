@@ -14,7 +14,7 @@ const guildSchema = new Schema({
     list : [String],
     logChannelId : {
         type: String,
-        default: ""
+        default: null
     },
     level : {
         type: Number,
