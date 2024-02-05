@@ -3,6 +3,21 @@ const mongoose = require('mongoose');
 const Message = require('../models/message.js');
 const Guild = require('../models/guild.js');
 
+const getGuild = async (guildId) => { 
+	let guild = await Guild.findOne({ id: guildId }).catch((err) => console.log(err));
+	
+	if(guild)
+		return guild;
+
+	guild = new Guild({
+		id: guildId,
+	});
+
+	await guild.save().catch((err) => console.log(err));
+	return guild;
+
+}
+
 module.exports = {
 	name: Events.MessageCreate,
 	async execute(message) {
@@ -12,13 +27,8 @@ module.exports = {
 		// if message is sent by webhook return
 		if(message.webhookId) return;
 
-		let guild = await Guild.findOne({ id: message.guildId }).catch((err) => console.log(err));
+		const guild = await getGuild(message.guildId);
 
-		if (!guild) {
-			guild = new Guild({
-				id: message.guildId,
-			});
-		}
 
 		// if list is false and channel in list return
 		if (guild.list.includes(message.channelId) && guild.listType == 0) return;
@@ -37,7 +47,6 @@ module.exports = {
 			attachments: message.attachments.map(attachment => {
 				return { url: attachment.url };
 			}),
-			 // Set default expiration to 1 day (24 hours
 		});
 
 		const expireAt = message.createdAt;
@@ -45,7 +54,6 @@ module.exports = {
 			expireAt.setDate(expireAt.getDate() + 1);
 		else
 			expireAt.setDate(expireAt.getDate() + guild.level*5);
-
 		DBmessage.expireAt = expireAt;
 		DBmessage.save().catch((err) => console.log(err));
 		
