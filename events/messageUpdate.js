@@ -148,30 +148,80 @@ module.exports = {
 			newMessageEmbed.setDescription("No This message has no content, it's probably an attachment.");
 		}
 
+		// add old message attachments to array of urls
+		let oldAttachments = oldMessage.attachments.map(attachment => {
+			return attachment.url;
+		});
+		// add new message attachments to array of urls
+		let newAttachments = newMessage.attachments.map(attachment => {
+			return attachment.url;
+		});
 
-		// Get attachments that are added to new message that wasn't in old message
-		const newAttachments = newMessage.attachments.filter(attachment => !oldMessage.attachments.has(attachment.id));
+
+
+		oldAttachments = oldAttachments.map(attachment => {
+			if(!newAttachments.includes(attachment))
+			{
+				return `~~[Attachment](${attachment})~~ - Deleted`;
+			}
+			return `[Attachment](${attachment})`;
+		})
+
+		newAttachments = newAttachments.map(attachment => {
+			return `[Attachment](${attachment})`;
+		})
+
+		// add attachments string joined by new line to array, of string is greater than 1024 characters split it into two fields
+		let arrayFields = [];
+
+		for(let i=0; i<oldAttachments.length; i++)
+		{
+			// if array of fields is empty or can be 1024 after adding new attachment add new empty string
+			if(arrayFields.length == 0 || (arrayFields[arrayFields.length-1].length + oldAttachments[i].length+10) > 1024)
+			{
+				arrayFields.push("");
+			}
+
+			arrayFields[arrayFields.length-1] += oldAttachments[i] + "\n";
+		}
+
 		
-		// Get attachments that are removed from new message that was in old message
-		const removedAttachments = oldMessage.attachments.filter(attachment => !newMessage.attachments.has(attachment.id));
 
-		if(newAttachments.size > 0)
-		{
-			newMessageEmbed.addFields({
-				name: "Added Attachments",
-				value: newAttachments.map(attachment => attachment.url).join("\n"),
-				inline: true
-			});
+
+		// add old message attachments to it's embed using oldAttachments array || if attachment not in new attachments say it's deleted
+		for (let i = 0; i < arrayFields.length; i++) {
+			oldMessageEmbed.addFields(
+				{
+					name: "Attachments",
+					value: arrayFields[i]
+				}
+			);
 		}
 
-		if(removedAttachments.size > 0)
+		let newarrayFields = [];
+
+		for(let i=0; i<newAttachments.length; i++)
 		{
-			oldMessageEmbed.addFields({
-				name: "Removed Attachments",
-				value: removedAttachments.map(attachment => attachment.url).join("\n"),
-				inline: true
-			});
+			// if array of fields is empty or can be 1024 after adding new attachment add new empty string
+			if(newarrayFields.length == 0 || (newarrayFields[newarrayFields.length-1].length + newAttachments[i].length+10) > 1024)
+			{
+				newarrayFields.push("");
+			}
+
+			newarrayFields[newarrayFields.length-1] += newAttachments[i] + "\n";
 		}
+
+		// add new message attachments to it's embed using newAttachments array
+		for (let i = 0; i < newarrayFields.length; i++) {
+			newMessageEmbed.addFields(
+				{
+					name: "Attachments",
+					value: newarrayFields[i]
+				}
+			);
+		}
+		
+
 
 		// add old message to message updates array
 		oldMessage.updates.push({

@@ -37,7 +37,6 @@ const messageSchema = new Schema({
     updates : [{
         content : {
             type: String,
-            required: true
         },
         createdAt : {
             type: Date,
