@@ -12,6 +12,11 @@ module.exports = {
 		// if message is sent by webhook return
 		if(message.webhookId) return;
 
+		// if dm return
+		if (!message.guildId) {
+			return;
+		}
+
 		const guild = await getGuild(message.guildId);
 
 
