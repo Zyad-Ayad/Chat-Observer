@@ -99,7 +99,13 @@ module.exports = {
                     iconURL: client.user.avatarURL(),
                 })
                 .setTimestamp()
-                .addField("Channels", guild.list.length == 0 ? "List is empty" : `<#${guild.list.join(">\n<#")}>`);
+                .addFields(
+                    {
+                        name: "Channels",
+                        value: guild.list.length > 0 ? guild.list.map(channel => `<#${channel}>`).join("\n") : "No channels in the list",
+                        inline: false
+                    }
+                    );
             return await interaction.reply({ embeds: [embed], ephemeral: true });
         }
 
